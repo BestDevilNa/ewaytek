@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 使用  annotation -->
+	<context:annotation-config />
+	<!-- 使用  annotation 自动注册bean,并检查@Controller,@Service,@Repository注解已经被注入-->
+	<context:component-scan base-package="com.ssh"/>
+
+	<!-- 数据库配置 -->
+	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/school" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	
+	<!-- sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="DataSource" ref="DataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+<!-- 				可以自动创建数据库表(create),不创建(none)
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.jdbc.batch_size"> 50 </prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop> -->
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- 可以自动创建数据库表(create),不创建(none) -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		
+		<!-- 包扫描的方式加载注解类  -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.ssh.*</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!--  事务管理器   -->
+	 <bean id="transactionManager"
+		  class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		  <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+
+	<!-- 用注解来实现事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	 
+</beans>

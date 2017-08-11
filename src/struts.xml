@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 开启使用开发模式,详细错误提示 -->
+	<constant name="struts.devMode" value="true"/>
+	<!-- 将对象交给Spring处理 -->
+	<constant name="struts.objectFactory" value="spring" />
+	<!-- 处理编码乱码的问题 -->
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<!-- 指定每次请求到达时,重新加载资源文件 -->
+	<constant name="struts.i18n.reload"   value="false" />
+	<!-- 指定每次默认文件更改后,自动重新加载 -->
+	<constant name="struts.configuration.xml.reload" value="false"/>
+	<!-- 	设置这个常量值为true，就可以使用动态方法调用了 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+</struts>    
